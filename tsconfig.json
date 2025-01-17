@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", // Modern JavaScript target
+    "module": "ESNext", // Use ES modules
+    "moduleResolution": "Bundler", // For browser compatibility
+    "lib": ["ES2022", "DOM"], // Include browser and modern JS APIs
+    "declaration": true, // Emit .d.ts files
+    "outDir": "./dist", // Output directory
+    "rootDir": "./src", // Root directory
+    "esModuleInterop": true, // Enable compatibility with CommonJS modules
+    "resolveJsonModule": true, // Allow importing JSON
+    "allowSyntheticDefaultImports": true, // Allow default imports
+    "strict": true, // Enable strict type checking
+    "skipLibCheck": true // Skip type checking for dependencies
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}

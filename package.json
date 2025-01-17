@@ -1,0 +1,56 @@
+{
+  "name": "@scintilla-network/mnemonic",
+  "version": "1.0.0",
+  "description": "Scintilla Network's BIP39 Mnemonic Parser and Generator",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "browser": "dist/browser/index.min.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/browser/index.min.js",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "tags": [
+    "mnemonic",
+    "bip39",
+    "scintilla",
+    "network",
+    "crypto",
+    "cryptography",
+    "mnemonic",
+    "seed",
+    "phrase",
+    "generator",
+    "parser"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && npm run build:js && npm run build:browser",
+    "build:js": "tsc",
+    "build:browser": "esbuild src/index.ts --bundle --format=esm --outfile=dist/browser/index.min.js",
+    "prepublishOnly": "npm run build",
+    "dev": "tsx --tsconfig tsconfig.dev.json dev.ts",
+    "test": "vitest"
+  },
+  "type": "module",
+  "author": "Scintilla Labs",
+  "license": "MIT",
+  "dependencies": {
+    "@scintilla-network/hashes": "1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.7",
+    "esbuild": "0.24.2",
+    "typescript": "5.7.3",
+    "vitest": "3.0.2"
+  }
+}

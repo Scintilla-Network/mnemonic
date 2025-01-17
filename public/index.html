@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <script type="module">
+      import { Mnemonic } from 'https://unpkg.com/@scintilla-network/mnemonic';
+      globalThis.Mnemonic = Mnemonic;
+    </script>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+    <button id="generate">Generate</button>
+    <p id="mnemonic"></p>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // clic button to generate mnemonic
+        document.getElementById('generate').addEventListener('click', () => {
+          const mnemonic = Mnemonic.generateMnemonic();
+          document.getElementById('mnemonic').innerText = mnemonic;
+        });
+      });
+    </script>
+ 
+  </body>
+</html>
