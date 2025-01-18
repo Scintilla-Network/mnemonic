@@ -53,13 +53,8 @@ import Mnemonic from '@scintilla-network/mnemonic';
 const mnemonic = new Mnemonic();
 console.log(mnemonic.phrase);
 
-// Generate seed and master key
+// Generate seed
 const seed = mnemonic.toSeed();
-const masterKey = mnemonic.toMasterDerivableKey();
-
-// Derive child keys (BIP44)
-const childKey = masterKey.derive("m/44'/8888'/0'/0/0");
-const address = childKey.toAddress('sct');
 ```
 
 ## Usage Guide
@@ -109,22 +104,6 @@ const seed = mnemonic.toSeed();
 const protectedSeed = mnemonic.toSeed('mypassword');
 ```
 
-### Key Derivation
-
-```javascript
-const mnemonic = new Mnemonic();
-
-// Generate master key
-const masterKey = mnemonic.toMasterDerivableKey();
-
-// With password protection
-const protectedMasterKey = mnemonic.toMasterDerivableKey('mypassword');
-
-// Derive child keys (BIP44)
-const childKey = masterKey.derive("m/44'/8888'/0'/0/0");
-const address = childKey.toAddress('sct');
-```
-
 ## API Reference
 
 ### `Mnemonic`
@@ -144,7 +123,6 @@ Mnemonic.generateMnemonic(bytes?: number): string
 #### Instance Methods
 ```typescript
 toSeed(password?: string): Uint8Array
-toMasterDerivableKey(password?: string): DerivableKey
 ```
 
 ### BIP39 Utilities
@@ -158,10 +136,7 @@ validateMnemonic(mnemonic: string, wordlist?: string[]): boolean
 ## Security Considerations
 
 - Never store mnemonics in plaintext
-- Use password protection for sensitive keys
-- Validate entropy sources
-- Keep seeds and master keys secure
-- Follow BIP39 specifications
+- Use password protection
 
 ## License
 

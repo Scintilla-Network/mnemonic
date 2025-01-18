@@ -1,6 +1,6 @@
 {
   "name": "@scintilla-network/mnemonic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scintilla Network's BIP39 Mnemonic Parser and Generator",
   "main": "dist/index.js",
   "module": "dist/index.js",
