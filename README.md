@@ -120,6 +120,12 @@ Mnemonic.generateMnemonic(bytes?: number): string
 ```
 - `bytes`: Entropy (128-256, multiple of 32). Default: 256
 
+```typescript
+Mnemonic.validate(string): boolean
+```
+- `string`: The mnemonic to validate
+
+
 #### Instance Methods
 ```typescript
 toSeed(password?: string): Uint8Array

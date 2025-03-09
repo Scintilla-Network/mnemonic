@@ -32,6 +32,16 @@ describe('Mnemonic', () => {
         });
     });
 
+    describe('validate', () => {
+        it('should validate valid mnemonic', () => {
+            expect(Mnemonic.validate(validPhrase)).toBe(true);
+        });
+
+        it('should validate invalid mnemonic', () => {
+            expect(Mnemonic.validate('invalid mnemonic')).toBe(false);
+        });
+    });
+
     describe('toSeed', () => {
         it('should generate correct seed without password', () => {
             const mnemonic = new Mnemonic(validPhrase);
