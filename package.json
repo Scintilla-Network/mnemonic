@@ -1,6 +1,6 @@
 {
   "name": "@scintilla-network/mnemonic",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Scintilla Network's BIP39 Mnemonic Parser and Generator",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -45,12 +45,12 @@
   "author": "Scintilla Labs",
   "license": "MIT",
   "dependencies": {
-    "@scintilla-network/hashes": "1.1.0"
+    "@scintilla-network/hashes": "1.2.0"
   },
   "devDependencies": {
-    "@types/node": "22.10.7",
-    "esbuild": "0.24.2",
-    "typescript": "5.7.3",
-    "vitest": "3.0.2"
+    "@types/node": "22.13.10",
+    "esbuild": "0.25.0",
+    "typescript": "5.8.2",
+    "vitest": "3.0.8"
   }
 }
