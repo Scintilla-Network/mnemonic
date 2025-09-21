@@ -17,6 +17,7 @@ Advanced BIP39 mnemonic generation and management library with comprehensive mul
   - Czech (Čeština)
   - Portuguese (Português)
   - Chinese (Simplified & Traditional)
+
 - 🔑 **Key Management**
   - BIP39 mnemonic generation
   - Seed generation
@@ -42,12 +43,10 @@ npm install @scintilla-network/mnemonic
 </script>
 ```
 
-
-
 ## Quick Start
 
 ```javascript
-import Mnemonic from '@scintilla-network/mnemonic';
+import { Mnemonic } from '@scintilla-network/mnemonic';
 
 // Generate new mnemonic (24 words by default)
 const mnemonic = new Mnemonic();
@@ -62,28 +61,31 @@ const seed = mnemonic.toSeed();
 ### Mnemonic Generation
 
 ```javascript
-import Mnemonic from '@scintilla-network/mnemonic';
-import { setDefaultWordlist, wordlists } from '@scintilla-network/mnemonic/BIP39';
-
+import { Mnemonic } from '@scintilla-network/mnemonic';
 // Default 24 words (256-bit entropy)
 const mnemonic = new Mnemonic();
 
 // Custom entropy (12 words = 128 bits)
+const shortPhrase = Mnemonic.generateMnemonic(128);
+
+// Custom as instance of Mnemonic
 const shortMnemonic = new Mnemonic(Mnemonic.generateMnemonic(128));
 
 // From existing phrase
 const phrase = 'shrimp various silver merge kidney kitten winter pluck smooth kidney enemy bulb';
 const imported = new Mnemonic(phrase);
+
+const isValid = Mnemonic.validate(phrase);
 ```
 
 ### Multi-Language Support
 
 ```javascript
-// Change default language
-setDefaultWordlist('japanese');
-const japaneseMnemonic = new Mnemonic();
+// Generate japanese mnemonic
+const jaMnemonic = new Mnemonic(null, 'japanese');
+console.log(jaMnemonic);
 
-// Generate in specific language
+// Set default language
 setDefaultWordlist('spanish');
 const spanishMnemonic = new Mnemonic();
 
@@ -109,12 +111,15 @@ const protectedSeed = mnemonic.toSeed('mypassword');
 ### `Mnemonic`
 
 #### Constructor
+
 ```typescript
 new Mnemonic(mnemonic?: string)
 ```
+
 - `mnemonic`: Optional existing phrase. Generates new if omitted
 
 #### Static Methods
+
 ```typescript
 Mnemonic.generateMnemonic(bytes?: number): string
 ```
@@ -125,8 +130,8 @@ Mnemonic.validate(string): boolean
 ```
 - `string`: The mnemonic to validate
 
-
 #### Instance Methods
+
 ```typescript
 toSeed(password?: string): Uint8Array
 ```

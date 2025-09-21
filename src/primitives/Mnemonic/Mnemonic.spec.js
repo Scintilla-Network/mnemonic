@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from '@scintilla-network/litest';
 import Mnemonic from "./Mnemonic.js";
-import { validateMnemonic, setDefaultWordlist, wordlists } from './BIP39/BIP39.js';
+import { validateMnemonic, setDefaultWordlist } from './BIP39/BIP39.js';
 
 describe('Mnemonic', () => {
     const validPhrase = 'shrimp various silver merge kidney kitten winter pluck smooth kidney enemy bulb script plug private margin leader repair enact clever duck woman luxury muscle';
