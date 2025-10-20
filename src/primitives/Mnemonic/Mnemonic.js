@@ -27,10 +27,14 @@ class Mnemonic {
      * @param {string} mnemonic - The mnemonic phrase (if empty, generates a new one)
      * @param {WordListLanguage} [wordlistLanguage='EN'] - Language for wordlist
      * @param {number} [bytes=256] - Entropy bytes for generation (if mnemonic is empty)
+     * @param {boolean} [skipValidation=false] - Skip validation of mnemonic
      */
-    constructor(mnemonic, wordlistLanguage = 'EN', bytes = 256) {
+    constructor(mnemonic, wordlistLanguage = 'EN', bytes = 256, skipValidation = false) {
         if (!mnemonic) {
             mnemonic = Mnemonic.generateMnemonic(bytes, wordlistLanguage);
+        }
+        if (!skipValidation && !Mnemonic.validate(mnemonic, wordlistLanguage)) {
+            throw new Error('Invalid mnemonic');
         }
         this.phrase = mnemonic;
     }

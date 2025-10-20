@@ -16,8 +16,9 @@ declare class Mnemonic implements IMnemonic {
      * @param mnemonic - The mnemonic phrase (if empty, generates a new one)
      * @param wordlistLanguage - Language for wordlist
      * @param bytes - Entropy bytes for generation (if mnemonic is empty)
+     * @param skipValidation - Skip validation of mnemonic
      */
-    constructor(mnemonic: string, wordlistLanguage?: WordListLanguage, bytes?: number);
+    constructor(mnemonic: string, wordlistLanguage?: WordListLanguage, bytes?: number, skipValidation?: boolean);
 
     /**
      * Validates a mnemonic phrase
@@ -39,9 +40,10 @@ declare class Mnemonic implements IMnemonic {
     /**
      * Converts the mnemonic to a seed
      * @param password - Optional password for seed derivation
+     * @param encoding - Encoding of the seed (uint8array, hex)
      * @returns The derived seed
      */
-    toSeed(password?: string): Uint8Array;
+    toSeed(password?: string, encoding?: 'uint8array' | 'hex'): Uint8Array;
 }
 
 export default Mnemonic;
