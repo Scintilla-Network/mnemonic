@@ -63,10 +63,17 @@ class Mnemonic {
     /**
      * Converts the mnemonic to a seed
      * @param {string} [password=''] - Optional password for seed derivation
+     * @param {string} [encoding='uint8array'] - Encoding of the seed (uint8array, hex)
      * @returns {Uint8Array} The derived seed
      */
-    toSeed(password = '') {
-        return mnemonicToSeedSync(this.phrase, password);
+    toSeed(password = '', encoding = 'uint8array') {
+        const seed = mnemonicToSeedSync(this.phrase, password);
+        if (encoding === 'uint8array') {
+            return seed;
+        } else if (encoding === 'hex') {
+            return Array.from(seed).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        throw new Error('Invalid encoding');
     }
 }
 

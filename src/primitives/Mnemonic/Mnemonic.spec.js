@@ -115,3 +115,13 @@ describe('Language Support', () => {
     });
 });
 
+describe('skipValidation', () => {
+    it('should create instance with provided faulty mnemonic', () => {
+        const mnemonic = new Mnemonic('something', 'EN', 256, true);
+        expect(mnemonic.phrase).toBe('something');
+        expect(mnemonic.toSeed('', 'hex')).toBe('e6e0998e2fd104310cb9912f8317477a99cc28b4978c562bada5480897fd5cc9d790df7cd1517b2ec9af6b7564cf5d43438b7546410301aa6f55672188b76ea9');
+    });
+    it('should by default prevent successful creation of instance with faulty mnemonic', () => {
+        expect(() => new Mnemonic('something')).toThrow();
+    });
+});
