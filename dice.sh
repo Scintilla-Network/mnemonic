@@ -166,7 +166,6 @@ echo "  console.log('Mnemonic:', mnemonic.phrase);"
 
 echo
 echo "Or for offline generation with the standalone bundle:"
-echo "  # Use readable version (with examples):"
 echo "  node -e \""
 echo "    import('./public/mnemonic.standalone.js').then(({ Mnemonic }) => {"
 echo "      const entropy = new Uint8Array('$ENTROPY_HEX'.match(/.{2}/g).map(h => parseInt(h, 16)));"
@@ -174,17 +173,7 @@ echo "      const mnemonicPhrase = Mnemonic.generateMnemonic($ENTROPY_BITS, 'EN'
 echo "      console.log('Mnemonic:', mnemonicPhrase);"
 echo "    });"
 echo "  \""
-echo ""
-echo "  # Or use minified version (smaller):"
-echo "  # node -e \""
-echo "  #   import('./public/mnemonic.standalone.min.js').then(({ Mnemonic }) => {"
-echo "  #     const entropy = new Uint8Array('$ENTROPY_HEX'.match(/.{2}/g).map(h => parseInt(h, 16)));"
-echo "  #     const mnemonicPhrase = Mnemonic.generateMnemonic($ENTROPY_BITS, 'EN', () => entropy);"
-echo "  #     console.log('Mnemonic:', mnemonicPhrase);"
-echo "  #   });"
-echo "  # \""
-
 echo
 echo "Or for browser offline generation:"
-echo "  Open public/bip39-standalone.html in a browser (no internet required)"
+echo "  Open public/index.html in a browser (no internet required)"
 echo "  Paste the entropy hex above into the 'Entropy' field"

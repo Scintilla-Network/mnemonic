@@ -1,6 +1,6 @@
 /**
  * Scintilla Network BIP39 Mnemonic Library - Standalone Bundle
- * Generated: 2025-11-02T00:58:02.329Z
+ * Generated: 2025-11-02T01:14:44.305Z
  * This file contains all dependencies bundled for offline use
  * Compatible with modern browsers and Node.js environments
  */
