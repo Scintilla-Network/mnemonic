@@ -29,6 +29,30 @@ Advanced BIP39 mnemonic generation and management library with comprehensive mul
   - Optional password protection
   - BIP39 specification compliant
 
+## Standalone Bundle
+
+For offline/air-gapped environments, you can build standalone bundles containing all dependencies:
+
+```bash
+npm run build:standalone
+```
+
+This creates two self-contained ES modules:
+- `public/mnemonic.standalone.js` - Readable version with usage examples (~435 KB)
+- `public/mnemonic.standalone.min.js` - Minified version for production (~336 KB, published to npm)
+
+**Usage:**
+```javascript
+// Import from readable version (with examples)
+import { Mnemonic } from './public/mnemonic.standalone.js';
+
+// Or from minified version
+import { Mnemonic } from './public/mnemonic.standalone.min.js';
+
+const entropy = new Uint8Array([/* your entropy bytes */]);
+const mnemonic = Mnemonic.generateMnemonic(128, 'EN', () => entropy);
+```
+
 ## Installation
 
 ```bash

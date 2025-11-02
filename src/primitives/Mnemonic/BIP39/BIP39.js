@@ -3,7 +3,7 @@
  * @description Implementation of the BIP39 mnemonic code specification
  */
 
-import { randomBytes } from '@scintilla-network/hashes/utils';
+import { utils } from '@scintilla-network/hashes';
 import { _wordlists, DEFAULT_WORDLIST } from './_wordlists.js';
 import { normalize } from './utils/normalize.js';
 import { lpad } from './utils/lpad.js';
@@ -156,7 +156,7 @@ function generateMnemonic(strength, rng, wordlist) {
     if (strength % 32 !== 0) {
         throw new TypeError(INVALID_ENTROPY);
     }
-    rng = rng || randomBytes;
+    rng = rng || utils.randomBytes;
     return entropyToMnemonic(rng(strength / 8), wordlist);
 }
 

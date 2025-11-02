@@ -1,23 +1,221 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scintilla Network - BIP39 Mnemonic Generator</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .section {
+        margin-bottom: 30px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+      }
+      h2 {
+        color: #555;
+        margin-top: 0;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+      input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+      .result {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        border-left: 4px solid #007bff;
+        margin-top: 15px;
+      }
+      .error {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+      .success {
+        color: #28a745;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+      .loading {
+        color: #ffc107;
+      }
+      .mnemonic-words {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        word-break: break-word;
+        border: 1px solid #e9ecef;
+      }
+    </style>
     <script type="module">
-      import { Mnemonic } from 'https://unpkg.com/@scintilla-network/mnemonic';
+      import { Mnemonic } from 'https://unpkg.com/@scintilla-network/mnemonic/public/mnemonic.standalone.min.js';
       globalThis.Mnemonic = Mnemonic;
     </script>
   </head>
   <body>
-    <h1>Hello World</h1>
-    <button id="generate">Generate</button>
-    <p id="mnemonic"></p>
+    <div class="container">
+      <h1>🔐 Scintilla Network - BIP39 Mnemonic Generator</h1>
+
+      <div class="section">
+        <h2>Generate Random Mnemonic</h2>
+        <p>Generate a new random BIP39 mnemonic phrase with 256-bit entropy.</p>
+        <button id="generate-random">Generate Random Mnemonic</button>
+      </div>
+
+      <!-- Entropy Input Section -->
+      <div class="section">
+        <h2>Generate from Entropy</h2>
+        <p>Enter your entropy (hexadecimal format) to generate a deterministic mnemonic. This is useful for generating mnemonics from dice rolls or other entropy sources.</p>
+
+        <label for="entropy-input">Entropy (hex):</label>
+        <textarea id="entropy-input" placeholder="Enter entropy in hex format (e.g., a1b2c3d4e5f678901234567890abcdef...)" spellcheck="false"></textarea>
+
+        <button id="generate-from-entropy">Generate from Entropy</button>
+
+        <div id="entropy-status"></div>
+      </div>
+
+      <!-- Result Section -->
+      <div class="section" id="result-section" style="display: none;">
+        <h2>Generated Mnemonic</h2>
+        <div class="result">
+          <div class="mnemonic-words" id="mnemonic-display"></div>
+          <div id="result-status"></div>
+        </div>
+      </div>
+    </div>
+
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // clic button to generate mnemonic
-        document.getElementById('generate').addEventListener('click', () => {
-          const mnemonic = Mnemonic.generateMnemonic();
-          document.getElementById('mnemonic').innerText = mnemonic;
+        const randomBtn = document.getElementById('generate-random');
+        const entropyBtn = document.getElementById('generate-from-entropy');
+        const entropyInput = document.getElementById('entropy-input');
+        const entropyStatus = document.getElementById('entropy-status');
+        const resultSection = document.getElementById('result-section');
+        const mnemonicDisplay = document.getElementById('mnemonic-display');
+        const resultStatus = document.getElementById('result-status');
+
+        randomBtn.addEventListener('click', async () => {
+          try {
+            setLoading(randomBtn, true);
+            const mnemonic = Mnemonic.generateMnemonic(256, 'EN');
+            showResult(mnemonic, 'Random mnemonic generated successfully');
+          } catch (error) {
+            showError('Failed to generate random mnemonic: ' + error.message);
+          } finally {
+            setLoading(randomBtn, false);
+          }
         });
+
+        entropyBtn.addEventListener('click', async () => {
+          const entropyHex = entropyInput.value.trim();
+
+          if (!entropyHex) {
+            showEntropyError('Please enter entropy');
+            return;
+          }
+
+          if (!/^[0-9a-fA-F]+$/.test(entropyHex)) {
+            showEntropyError('Entropy must contain only hexadecimal characters (0-9, a-f)');
+            return;
+          }
+
+          if (entropyHex.length % 2 !== 0) {
+            showEntropyError('Entropy must have even length (each byte = 2 hex chars)');
+            return;
+          }
+
+          const entropyBytes = entropyHex.length / 2;
+          if (entropyBytes < 16 || entropyBytes > 32 || entropyBytes % 4 !== 0) {
+            showEntropyError('Entropy must be 16, 20, 24, 28, or 32 bytes (32, 40, 48, 56, or 64 hex characters)');
+            return;
+          }
+
+          try {
+            setLoading(entropyBtn, true);
+            clearEntropyStatus();
+
+            const entropy = new Uint8Array(entropyHex.match(/.{2}/g).map(h => parseInt(h, 16)));
+            const mnemonic = Mnemonic.generateMnemonic(entropyBytes * 8, 'EN', () => entropy);
+
+            showResult(mnemonic, `Mnemonic generated from ${entropyBytes * 8}-bit entropy`);
+          } catch (error) {
+            showEntropyError('Failed to generate mnemonic from entropy: ' + error.message);
+          } finally {
+            setLoading(entropyBtn, false);
+          }
+        });
+
+        function setLoading(button, loading) {
+          button.disabled = loading;
+          button.textContent = loading ? 'Generating...' : button.textContent.replace('Generating...', button.id === 'generate-random' ? 'Generate Random Mnemonic' : 'Generate from Entropy');
+        }
+
+        function showResult(mnemonic, message) {
+          mnemonicDisplay.textContent = mnemonic;
+          resultStatus.innerHTML = `<span class="success">${message}</span>`;
+          resultSection.style.display = 'block';
+          resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+          resultStatus.innerHTML = `<span class="error">${message}</span>`;
+          resultSection.style.display = 'block';
+        }
+
+        function showEntropyError(message) {
+          entropyStatus.innerHTML = `<span class="error">${message}</span>`;
+        }
+
+        function clearEntropyStatus() {
+          entropyStatus.innerHTML = '';
+        }
       });
     </script>
- 
   </body>
 </html>
